@@ -57,6 +57,15 @@ Run the experiments
 #### (1) For TACRED
 
 ```
+mkdir results
+cd results
+mkdir tacred
+cd tacred
+mkdir train
+mkdir val
+mkdir test
+cd ..
+cd ..
 cd code_script
 bash run_large_tacred.sh
 ```
@@ -64,6 +73,15 @@ bash run_large_tacred.sh
 #### (2) For TACREV
 
 ```
+mkdir results
+cd results
+mkdir tacrev
+cd tacrev
+mkdir train
+mkdir val
+mkdir test
+cd ..
+cd ..
 cd code_script
 bash run_large_tacrev.sh
 ```
@@ -71,6 +89,15 @@ bash run_large_tacrev.sh
 #### (3) For RETACRED
 
 ```
+mkdir results
+cd results
+mkdir retacred
+cd retacred
+mkdir train
+mkdir val
+mkdir test
+cd ..
+cd ..
 cd code_script
 bash run_large_retacred.sh
 ```
