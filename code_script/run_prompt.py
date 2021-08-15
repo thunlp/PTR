@@ -66,16 +66,16 @@ def f1_score(output, label, rel_num, na_num):
 
     return micro_f1, f1_by_relation
 
-def evaluate(model, val_dataset, val_dataloader):
+def evaluate(model, dataset, dataloader):
     model.eval()
     scores = []
     all_labels = []
 
     with torch.no_grad():
-        for batch in tqdm(val_dataloader):
+        for batch in tqdm(dataloader):
             logits = model(**batch)
             res = []
-            for i in val_dataset.prompt_id_2_label:
+            for i in dataset.prompt_id_2_label:
                 _res = 0.0
                 for j in range(len(i)):
                     _res += logits[j][:, i[j]]                
@@ -92,7 +92,7 @@ def evaluate(model, val_dataset, val_dataloader):
         np.save("all_labels.npy", all_labels)
 
         pred = np.argmax(scores, axis = -1)
-        mi_f1, ma_f1 = f1_score(pred, all_labels, val_dataset.num_class, val_dataset.NA_NUM)
+        mi_f1, ma_f1 = f1_score(pred, all_labels, dataset.num_class, dataset.NA_NUM)
         return mi_f1, ma_f1
 
 args = get_args_parser()
@@ -146,6 +146,13 @@ train_dataset = REPromptDataset.load(
 
 val_dataset = REPromptDataset.load(
     path = args.output_dir, 
+    name = "val", 
+    temps = temps,
+    tokenizer = tokenizer,
+    rel2id = args.data_dir + "/" + "rel2id.json")
+
+test_dataset = REPromptDataset.load(
+    path = args.output_dir, 
     name = "test", 
     temps = temps,
     tokenizer = tokenizer,
@@ -161,14 +168,20 @@ val_dataset.cuda()
 val_sampler = SequentialSampler(val_dataset)
 val_dataloader = DataLoader(val_dataset, sampler=val_sampler, batch_size=train_batch_size//2)
 
-model = get_model(tokenizer, val_dataset.prompt_label_idx)
+test_dataset.cuda()
+test_sampler = SequentialSampler(test_dataset)
+test_dataloader = DataLoader(test_dataset, sampler=test_sampler, batch_size=train_batch_size//2)
+
+model = get_model(tokenizer, train_dataset.prompt_label_idx)
 optimizer, scheduler, optimizer_new_token, scheduler_new_token = get_optimizer(model, train_dataloader)
 criterion = nn.CrossEntropyLoss()
+
 mx_res = 0.0
 hist_mi_f1 = []
 hist_ma_f1 = []
+mx_epoch = None
+last_epoch = None
 
-# model.load_state_dict(torch.load(args.output_dir+"/"+'parameter'+'4'+".pkl"))
 for epoch in trange(int(args.num_train_epochs), desc="Epoch"):
     model.train()
     model.zero_grad()
@@ -215,8 +228,17 @@ for epoch in trange(int(args.num_train_epochs), desc="Epoch"):
     hist_ma_f1.append(ma_f1)
     if mi_f1 > mx_res:
         mx_res = mi_f1
+        mx_epoch = epoch
         torch.save(model.state_dict(), args.output_dir+"/"+'parameter'+str(epoch)+".pkl")
+    last_epoch = epoch
 
 print (hist_mi_f1)
 print (hist_ma_f1)
-print (mx_res)
+
+# model.load_state_dict(torch.load(args.output_dir+"/"+'parameter'+str(mx_epoch)+".pkl"))
+# mi_f1, _ = evaluate(model, test_dataset, test_dataloader)
+
+model.load_state_dict(torch.load(args.output_dir+"/"+'parameter'+str(last_epoch)+".pkl"))
+mi_f1, _ = evaluate(model, test_dataset, test_dataloader)
+
+print (mi_f1)

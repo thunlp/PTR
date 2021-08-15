@@ -14,4 +14,4 @@ python3 run_prompt.py \
 --num_train_epochs 5 \
 --weight_decay 1e-2 \
 --adam_epsilon 1e-6 \
---temps temp_dd.txt
+--temps temp.txt
