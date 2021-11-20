@@ -232,8 +232,10 @@ for epoch in trange(int(args.num_train_epochs), desc="Epoch"):
         torch.save(model.state_dict(), args.output_dir+"/"+'parameter'+str(epoch)+".pkl")
     last_epoch = epoch
 
-print (hist_mi_f1)
-print (hist_ma_f1)
+torch.save(model.state_dict(), args.output_dir+"/"+'parameter'+str(last_epoch)+".pkl")
+
+# print (hist_mi_f1)
+# print (hist_ma_f1)
 
 # model.load_state_dict(torch.load(args.output_dir+"/"+'parameter'+str(mx_epoch)+".pkl"))
 # mi_f1, _ = evaluate(model, test_dataset, test_dataloader)
