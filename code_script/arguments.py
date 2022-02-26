@@ -40,7 +40,7 @@ def get_args_parser():
                         help="The output directory where the model predictions and checkpoints will be written")
 
     parser.add_argument("--new_tokens", default=5, type=int, 
-                        help="The output directory where the model predictions and checkpoints will be written")
+                        help="Total Number of [MASK] tokens in the prompt")
 
     parser.add_argument("--max_seq_length", default=256, type=int,
                         help="The maximum total input sequence length after tokenization for PET. Sequences longer "
