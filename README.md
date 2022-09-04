@@ -104,3 +104,9 @@ bash scripts/run_large_tacrev.sh
 bash scripts/run_large_retacred.sh
 ```
 
+### 4. For Semeval
+
+```bash
+bash scripts/run_large_semeval.sh
+```
+
