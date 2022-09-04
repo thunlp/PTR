@@ -1,13 +1,23 @@
 # PTR: Prompt Tuning with Rules for Text Classification
 
 
-Code and datasets for our paper "[PTR: Prompt Tuning with Rules for Text Classification](https://arxiv.org/pdf/2105.11259.pdf)"
+The code and datasets of our paper "[PTR: Prompt Tuning with Rules for Text Classification](https://arxiv.org/pdf/2105.11259.pdf)"
 
-To clone the repository, run:
+To clone the repository, please run the following command:
 
 ```bash
 git clone https://github.com/thunlp/PTR.git --depth 1
 ```
+
+If you use the code, please cite the following paper:
+
+```
+@article{han2021ptr,
+  title={PTR: Prompt Tuning with Rules for Text Classification},
+  author={Han, Xu and Zhao, Weilin and Ding, Ning and Liu, Zhiyuan and Sun, Maosong},
+  journal={arXiv preprint arXiv:2105.11259},
+  year={2021}
+}
 
 # Quick Links
 + [Overview](#overview)
@@ -21,15 +31,12 @@ git clone https://github.com/thunlp/PTR.git --depth 1
   + [Baselines](#baselines)
   + [Reproduce Results](#reproduce-results)
 
-+ [Citation](#citation)
 
 # Overview
 <center>
 <img src="figs/ptr.png" width="80%">
 </center>
-In this work, we propose prompt tuning with rules (PTR) for many-class text classification and apply logic rules to construct prompts with several sub-prompts. In this way, PTR is able to encode prior knowledge of each class into prompt tuning.
-
-You can find more details in our [paper](https://arxiv.org/pdf/2105.11259.pdf).
+In this work, we propose prompt tuning with rules (PTR) for many-class text classification and apply logic rules to construct prompts with several sub-prompts. In this way, PTR is able to encode prior knowledge of each class into prompt tuning. You can find more details in our [paper](https://arxiv.org/pdf/2105.11259.pdf).
 
 # Requirements
 
@@ -66,6 +73,10 @@ where `$dataset_nameX` can be one or multiple of `retacred`, `tacred`, `tacrev`,
 
 # Experiments
 
+<center>
+<img src="figs/baseline.png" width="80%">
+</center>
+
 ## Baselines
 
 Some baselines, especially the baselines using entity markers, come from the project [[RE_improved_baseline]](https://github.com/wzhouad/RE_improved_baseline).
@@ -91,14 +102,3 @@ bash scripts/run_large_tacrev.sh
 bash scripts/run_large_retacred.sh
 ```
 
-# Citation
-If you use the code, please cite the following paper:
-
-```
-@article{han2021ptr,
-  title={PTR: Prompt Tuning with Rules for Text Classification},
-  author={Han, Xu and Zhao, Weilin and Ding, Ning and Liu, Zhiyuan and Sun, Maosong},
-  journal={arXiv preprint arXiv:2105.11259},
-  year={2021}
-}
-```
